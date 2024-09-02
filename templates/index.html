@@ -3,6 +3,11 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
- <button type="button" action='/'>Draw card</button>
- {{% result %}}
+<a href='/draw'>
+	<button type="button" action='/draw/'>
+	 	Draw card 
+	 </button>
+</a>
+<br>
+ {{ result }}
 {% endblock %}
