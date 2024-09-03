@@ -5,11 +5,20 @@
 {% block content %}
 
 <div>
+<form action="/form/">
+<button class='form' type='submit'>
+	New game
+	</button>
+	</form>
+</div>
+
+
+<!--  <div>
 <a href="/draw/{{deck}}"> тянуть </a>
 </div>
 
 <img src={{draw}}>
-<!-- <div>
+<div>
     <b>
 	{{variable}}
 	</b>
@@ -21,9 +30,7 @@
 	Число для возведения в квадрат
 	</label>
 	<input type='number' name='square_name' required>
-	<button class='form' type='submit'>
-	В квадрат
-	</button>
+
 	<a href:'/square.html'>
 	</form>
 </div> -->
