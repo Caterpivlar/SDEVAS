@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 import json
 import requests
+cardsrow = []
 app = Flask(__name__)
 @app.route('/')
 
@@ -17,12 +18,11 @@ def get_deck():
 def draw_card(deck):
     draw = json.loads(requests.get
 	('https://deckofcardsapi.com/api/deck/'+deck+'/draw/?count=1').text)["cards"][0]["image"]
-    return render_template('form.html', draw=draw,deck=deck)
+    cardsrow.append(draw)
+    return render_template('form.html', draw=draw,deck=deck,cardsrow=cardsrow)
 
 # @app.route('&&&')
 
 
-
-		
 if __name__ == '__main__':
 	app.run(debug=True)
