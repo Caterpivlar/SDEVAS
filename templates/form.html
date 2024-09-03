@@ -1,4 +1,5 @@
 <!-- templates/form.html -->
+<!DOCTYPE html>
 {% extends "base.html" %}
 
 {% block title %}Home{% endblock %}
@@ -7,11 +8,29 @@
 
 <div>
 <form action="/new_cards/{{deck}}">
-<button class='form' type='submit'>
+<button class='form' type='submit' id='give_card'>
 	Дай карту
 	</button>
-	</form>
+	</form>		
 </div>
+
+<div>
+{% if game_over %}
+<script>
+if (game_over=true) {
+        document.getElementById("give_card").disabled = true;}
+</script>
+		 <p "class="losing-message""; "style="color:red;">Вы проиграли, сыграем еще?</p>
+		 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQr2KuOy1sD82kDJzveyWSLlKD9U6QFDGHWhQ&s" alt="Иконка">
+<br><br>
+<form action="/form/">
+<button class='form' type='submit'>
+	ГО некст рили
+	</button>
+	</form>    
+	{% endif %}
+</div>
+
 	<div>
     <p>Осталось в колоде {{rem}}</p>
 	<p>Счет игрока {{sum_score_player}}</p>
@@ -22,14 +41,14 @@
     <div class="col-md-3">
       <div class="draw mb-3">
        <div class="card-body"> 
-     <!--<p class="badge bg-primary text-wrap"><{{draw}}></p> -->
-         <p class="badge bg-primary text-wrap"><img src={{draw}}></p> 
+         <p class="badge bg-primary text-wrap"><img src={{draw}}></p>
 		  </div>
       </div>
     </div>	
   {% endfor %}
   </div>
 </div>
+
 
 
 {% endblock %}
