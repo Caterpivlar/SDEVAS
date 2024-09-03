@@ -12,6 +12,9 @@
 	</button>
 	</form>
 </div>
+	<div>
+	<p>Осталось в колоде {{rem}}</p>
+	</div>
 <div class="cardsrow">
  <div class="row">
   {% for draw in cardsrow %}
@@ -19,15 +22,14 @@
       <div class="draw mb-3">
        <div class="card-body"> 
            <p class="badge bg-primary text-wrap"><img src={{draw}}></p>
-          </div>
+		  </div>
       </div>
-    </div>
+    </div>	
   {% endfor %}
   </div>
 </div>
 
 
-<img src={{cardsrow}}>
 {% endblock %}
 
 
