@@ -1,0 +1,15 @@
+import requests
+import json
+
+def get_deck():
+    deck = json.loads(requests.post
+	('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1').text)["deck_id"]
+    return deck
+get_deck()
+deck_new = get_deck()  
+
+def draw_card(): #get не пост в этой api
+    draw = json.loads(requests.post 
+	('https://deckofcardsapi.com/api/deck/'+deck_new+'/draw/?count=2').text)["cards"]
+    return draw
+draw_card()
