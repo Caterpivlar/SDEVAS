@@ -25,16 +25,16 @@ def get_deck():
 def draw_card(deck):
 	all_info=json.loads(requests.get #запрос
 	('https://deckofcardsapi.com/api/deck/'+deck+'/draw/?count=1').text)
-	draw=all_info["cards"][0]["image"] #картинка карты
-	rem =all_info['remaining'] #сколько карт осталось
-	value=all_info["cards"][0]["value"] #вес карты
-	if value=='JACK' or value=='QUEEN' or value=='KING': #условия для валет-туз
-		value=10
-	elif value=='ACE':
-		value=11	
-	value=int(value)  
+	draw = all_info["cards"][0]["image"] #картинка карты
+	rem = all_info['remaining'] #сколько карт осталось
+	value = all_info["cards"][0]["value"] #вес карты
+	if value =='JACK' or value == 'QUEEN' or value == 'KING': #условия для валет-туз
+		value = 10
+	elif value == 'ACE':
+		value = 11	
+	value = int(value)  
 	score_player.append(value) #включение в список значения карты
-	sum_score_player=sum(score_player) #сумма списка
+	sum_score_player = sum(score_player) #сумма списка
 	cardsrow.append(draw) #включение картинки в список
 	if sum_score_player > 21: #условия проигрыша
 		return render_template('form.html', draw=draw,deck=deck,cardsrow=cardsrow, rem=rem, 
@@ -45,7 +45,7 @@ def draw_card(deck):
 
 @app.route('/dealer/<deck>')
 def dealer(deck):
-	while sum(score_dealer) < 17: 
+	while sum(score_dealer) <= 17: 
 		all_info = json.loads(requests.get #запрос
 	('https://deckofcardsapi.com/api/deck/'+deck+'/draw/?count=1').text)
 		draw = all_info["cards"][0]["image"] #картинка карты
