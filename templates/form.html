@@ -15,26 +15,35 @@
 </div>
 
 <div>
-{% if game_over %}
-<script>
+<form action="/form/">
+<button class='form' type='submit'>
+	Начать заново
+	</button>
+	</form>    
+</div>
+
+<div>
+{% if game_over %} <!-- Условие для окончания игры -->
+<script> 
 if (game_over=true) {
-        document.getElementById("give_card").disabled = true;}
-</script>
-		 <p "class="losing-message""; "style="color:red;">Вы проиграли, сыграем еще?</p>
+        document.getElementById("give_card").disabled = true;} 
+</script> <!-- Вырубить кнопку дай карту -->
+		 <p class="losing-message""; style="color:red;">Вы проиграли, сыграем еще?</p>
 		 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQr2KuOy1sD82kDJzveyWSLlKD9U6QFDGHWhQ&s" alt="Иконка">
 <br><br>
-<form action="/form/">
+<!-- <form action="/form/">
 <button class='form' type='submit'>
 	ГО некст рили
 	</button>
-	</form>    
-	{% endif %}
+	</form> -->   
+	{% endif %} 
 </div>
 
-	<div>
+
+<div>
     <p>Осталось в колоде {{rem}}</p>
 	<p>Счет игрока {{sum_score_player}}</p>
-	</div>
+</div>
 <div class="cardsrow">
  <div class="row">
   {% for draw in cardsrow %}
@@ -48,8 +57,6 @@ if (game_over=true) {
   {% endfor %}
   </div>
 </div>
-
-
 
 {% endblock %}
 

@@ -21,18 +21,18 @@ def get_deck():
 
 @app.route('/new_cards/<deck>')
 def draw_card(deck):
-	all_info=json.loads(requests.get
+	all_info=json.loads(requests.get #запрос
 	('https://deckofcardsapi.com/api/deck/'+deck+'/draw/?count=1').text)
 	draw=all_info["cards"][0]["image"]
-	rem =all_info['remaining']
-	value=str(all_info["cards"][0]["value"])
-	if value=='JACK' or value=='QUEEN' or value=='KING':
+	rem =all_info['remaining'] #сколько карт осталось
+	value=all_info["cards"][0]["value"] #вес карты
+	if value=='JACK' or value=='QUEEN' or value=='KING': #условия для валет-король
 		value=10
 	elif value=='ACE':
 		value=11	
 	value=int(value)
 	score_player.append(value)
-	sum_score_player=int(sum(score_player))
+	sum_score_player=sum(score_player)
 	cardsrow.append(draw)
 	if sum_score_player > 21:
 		return render_template('form.html', draw=draw,deck=deck,cardsrow=cardsrow, rem=rem, 
