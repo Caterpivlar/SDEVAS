@@ -37,8 +37,10 @@ def draw_card(deck):
 	sum_score_player = sum(score_player) #сумма списка
 	cardsrow.insert(0, draw) #включение картинки в список
 	if sum_score_player > 21: #условия проигрыша
-		return render_template('form.html', draw=draw,deck=deck,cardsrow=cardsrow, rem=rem, 
-		sum_score_player=sum_score_player, game_over=True)
+		message = "Ты проиграл, лох"
+		return render_template('form.html', draw=draw, deck=deck, cardsrow=cardsrow, rem=rem, 
+                           sum_score_player=sum_score_player,message=message,
+                           game_over=True, loser=True)
 	else:
 		return render_template('form.html', draw=draw,deck=deck,cardsrow=cardsrow, rem=rem, 
 		sum_score_player=sum_score_player, game_over=False)
@@ -51,29 +53,27 @@ def dealer(deck):
 		draw = all_info["cards"][0]["image"] #картинка карты
 		rem = all_info['remaining'] #сколько карт осталось
 		value = all_info["cards"][0]["value"] #вес карты
-		if value=='JACK' or value=='QUEEN' or value=='KING': #условия для валет-туз
-			value=10
-		elif value=='ACE':
-			value=11	
+		if value == 'JACK' or value == 'QUEEN' or value == 'KING': #условия для валет-туз
+			value = 10
+		elif value == 'ACE':
+			value = 11	
 		value=int(value)
 		score_dealer.append(value)
 		dealer_cards.insert(0, draw)
 		
-	sum_score_dealer=sum(score_dealer)
-	sum_score_player=sum(score_player)
-	if sum_score_player > 21:
+	sum_score_dealer = sum(score_dealer)
+	sum_score_player = sum(score_player)
+	if sum_score_player > 21 or sum_score_player <= sum_score_dealer:
 		message = "Ты проиграл, лох"
-	elif sum_score_dealer > 21:
-		message = "Дилер лох! Ты победил!"
-	elif sum_score_player > sum_score_dealer:
-		message = "Ты победил!"
-	elif sum_score_player < sum_score_dealer:
-		message = "Дилер победил!"
-	else:
-		message = "Ничья!"
-	return render_template('form.html', draw=draw, deck=deck, cardsrow=cardsrow, rem=rem, 
+		return render_template('form.html', draw=draw, deck=deck, cardsrow=cardsrow, rem=rem, 
                            sum_score_player=sum_score_player, sum_score_dealer=sum_score_dealer, 
-                           game_over=True, dealer_cards=dealer_cards, message=message)
+                           game_over=True, dealer_cards=dealer_cards, message=message, loser=True)
+	elif sum_score_dealer > 21 or sum_score_player > sum_score_dealer:
+		message = "Дилер лох! Ты победил!"
+		return render_template('form.html', draw=draw, deck=deck, cardsrow=cardsrow, rem=rem, 
+                           sum_score_player=sum_score_player, sum_score_dealer=sum_score_dealer, 
+                           game_over=True, dealer_cards=dealer_cards, message=message, winer=True)
+
 
 
 # @app.route('&&&')

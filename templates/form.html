@@ -13,7 +13,7 @@
 	</button>
 	</form>		
 </div>
-<br><br>
+<br>
 <div>
 <form action="/form/">
 <button class='form' type='submit'>
@@ -21,7 +21,7 @@
 	</button>
 	</form>    
 </div>
-<br><br>
+<br>
 <div>
 <form action="/dealer/{{deck}}">
 <button class='form' type='submit' id='pass'>
@@ -36,6 +36,54 @@
 	<script>{document.getElementById("pass").disabled = true;}</script>
 <p>{{message}}</p>
 
+	{%if loser%} 
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQr2KuOy1sD82kDJzveyWSLlKD9U6QFDGHWhQ&s" alt="Иконка">}
+	{% endif %}
+	
+	{%if winer%} 
+<img src="https://static.stratege.ru/trophies/NPWR01460_00/TROP029.PNG" alt="Иконка">
+	{% endif %}
+
+	{% endif %} 
+</div>
+
+
+<div>
+    <p>Осталось в колоде {{rem}}</p>
+	<p>Счет игрока {{sum_score_player}}</p>
+	<p>Счет дилера {{sum_score_dealer}}</p>
+</div>
+<div class="cardsrow">
+ <div class="row">
+ <p> Твои карты:</p>
+  {% for draw in cardsrow %} <!-- Для игрока -->
+    <div class="col-md-3">
+      <div class="draw mb-3">
+       <div class="card-body"> 
+         <p class="badge bg-primary text-wrap"><img src={{draw}} height="200" ></p>
+		  </div>
+      </div>
+    </div>	
+  {% endfor %}
+  </div>
+</div>
+
+<div class="dealer_cards">
+ <div class="row">
+  <p> Карты дилера:</p>
+  {% for draw in dealer_cards %} <!-- Для дилера -->
+    <div class="col-md-3">
+      <div class="draw mb-3">
+       <div class="card-body"> 
+         <p class="badge bg-primary text-wrap"><img src={{draw}} height="200"></p>
+		  </div>
+      </div>
+    </div>	
+  {% endfor %}
+  </div>
+</div>
+
+{% endblock %}
  <!-- Условие для окончания игры -->
 <!--  <script> 
 if (game_over=true) {
@@ -49,49 +97,3 @@ if (game_over=true) {
 	ГО некст рили
 	</button>
 	</form> -->   
-	{% endif %} 
-</div>
-
-
-<div>
-    <p>Осталось в колоде {{rem}}</p>
-	<p>Счет игрока {{sum_score_player}}</p>
-	<p>Счет дилера {{sum_score_dealer}}</p>
-</div>
-<div class="cardsrow">
- <div class="row">
-  {% for draw in cardsrow %} <!-- Для игрока -->
-    <div class="col-md-3">
-      <div class="draw mb-3">
-       <div class="card-body"> 
-         <p class="badge bg-primary text-wrap"><img src={{draw}}></p>
-		  </div>
-      </div>
-    </div>	
-  {% endfor %}
-  </div>
-</div>
-
-{% endblock %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- <form action="/submit" method="POST">
- <label for="name">Name:</label>
-    <input type="text" id="name" name="name" required>
-
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required>
-
-    <button type="submit">Submit</button>
-</form> -->
