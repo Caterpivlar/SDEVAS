@@ -6,6 +6,7 @@ dealer_cards = []
 score_player=[]
 score_dealer=[]
 app = Flask(__name__)
+	
 
 @app.route('/')
 def start():
@@ -31,8 +32,8 @@ def draw_card(deck):
 	if value =='JACK' or value == 'QUEEN' or value == 'KING': #условия для валет-туз
 		value = 10
 	elif value == 'ACE':
-		value = 11	
-	value = int(value)  
+		value = 11
+	value = int(value)
 	score_player.append(value) #включение в список значения карты
 	sum_score_player = sum(score_player) #сумма списка
 	cardsrow.insert(0, draw) #включение картинки в список
@@ -47,7 +48,7 @@ def draw_card(deck):
 
 @app.route('/dealer/<deck>')
 def dealer(deck):
-	while sum(score_dealer) <= 17: 
+	while sum(score_dealer) <= 17: #!если тянет 2 картинки, то больше 17 и дальше тянет!
 		all_info = json.loads(requests.get #запрос
 	('https://deckofcardsapi.com/api/deck/'+deck+'/draw/?count=1').text)
 		draw = all_info["cards"][0]["image"] #картинка карты
@@ -63,17 +64,16 @@ def dealer(deck):
 		
 	sum_score_dealer = sum(score_dealer)
 	sum_score_player = sum(score_player)
-	if sum_score_player > 21 or sum_score_player <= sum_score_dealer:
+	if sum_score_player > 21 or (sum_score_player <= sum_score_dealer <= 21):
 		message = "Ты проиграл, лох"
 		return render_template('form.html', draw=draw, deck=deck, cardsrow=cardsrow, rem=rem, 
                            sum_score_player=sum_score_player, sum_score_dealer=sum_score_dealer, 
                            game_over=True, dealer_cards=dealer_cards, message=message, loser=True)
-	elif sum_score_dealer > 21 or sum_score_player > sum_score_dealer:
+	elif sum_score_dealer > 21 or (sum_score_player <=21 and sum_score_dealer > 21):
 		message = "Дилер лох! Ты победил!"
 		return render_template('form.html', draw=draw, deck=deck, cardsrow=cardsrow, rem=rem, 
                            sum_score_player=sum_score_player, sum_score_dealer=sum_score_dealer, 
                            game_over=True, dealer_cards=dealer_cards, message=message, winer=True)
-
 
 
 # @app.route('&&&')
