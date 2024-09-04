@@ -23,14 +23,27 @@
 </div>
 
 <div>
-{% if game_over %} <!-- Условие для окончания игры -->
-<script> 
+<form action="/dealer/{{deck}}">
+<button class='form' type='submit' id='pass'>
+	Пас
+	</button>
+	</form>    
+</div>
+
+<div>
+{% if game_over %}
+	<script>{document.getElementById("give_card").disabled = true;}</script>
+	<script>{document.getElementById("pass").disabled = true;}</script>
+<p>{{message}}</p>
+
+ <!-- Условие для окончания игры -->
+<!--  <script> 
 if (game_over=true) {
-        document.getElementById("give_card").disabled = true;} 
+      document.getElementById("give_card").disabled = true;} 
 </script> <!-- Вырубить кнопку дай карту -->
-		 <p class="losing-message""; style="color:red;">Вы проиграли, сыграем еще?</p>
-		 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQr2KuOy1sD82kDJzveyWSLlKD9U6QFDGHWhQ&s" alt="Иконка">
-<br><br>
+		<!-- <p class="losing-message""; style="color:red;">Вы проиграли, сыграем еще?</p>
+		 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQr2KuOy1sD82kDJzveyWSLlKD9U6QFDGHWhQ&s" alt="Иконка">  
+<br><br> 
 <!-- <form action="/form/">
 <button class='form' type='submit'>
 	ГО некст рили
@@ -43,10 +56,11 @@ if (game_over=true) {
 <div>
     <p>Осталось в колоде {{rem}}</p>
 	<p>Счет игрока {{sum_score_player}}</p>
+	<p>Счет дилера {{sum_score_dealer}}</p>
 </div>
 <div class="cardsrow">
  <div class="row">
-  {% for draw in cardsrow %}
+  {% for draw in cardsrow %} <!-- Для игрока -->
     <div class="col-md-3">
       <div class="draw mb-3">
        <div class="card-body"> 
