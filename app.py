@@ -35,7 +35,7 @@ def draw_card(deck):
 	value = int(value)  
 	score_player.append(value) #включение в список значения карты
 	sum_score_player = sum(score_player) #сумма списка
-	cardsrow.append(draw) #включение картинки в список
+	cardsrow.insert(0, draw) #включение картинки в список
 	if sum_score_player > 21: #условия проигрыша
 		return render_template('form.html', draw=draw,deck=deck,cardsrow=cardsrow, rem=rem, 
 		sum_score_player=sum_score_player, game_over=True)
@@ -57,7 +57,7 @@ def dealer(deck):
 			value=11	
 		value=int(value)
 		score_dealer.append(value)
-		dealer_cards.append(draw)
+		dealer_cards.insert(0, draw)
 		
 	sum_score_dealer=sum(score_dealer)
 	sum_score_player=sum(score_player)
