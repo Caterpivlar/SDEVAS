@@ -81,7 +81,7 @@ def dealer(deck):
 		message = "Дилер лох! Ты победил!"
 		return render_template('form.html', draw=draw, deck=deck, cardsrow=cardsrow, rem=rem, 
                            sum_score_player=sum_score_player, sum_score_dealer=sum_score_dealer, 
-                           game_over=True, dealer_cards=dealer_cards, message=message, winer=True)
+                           game_over=True, dealer_cards=dealer_cards, message=message, winner=True)
 
 
 # @app.route('&&&')
