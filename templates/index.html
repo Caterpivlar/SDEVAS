@@ -4,16 +4,69 @@
 
 {% block content %}
 
-<div>
-<h1 style=color:green font size="5">Welcome в наш <b>kA3uHbI4</b></h1>
-<form action="/form/">
-<button class='form' type='submit'>
-	New game
-	</button>
-	</form>
+<style>
+    body {
+        background-image: url('https://avatars.dzeninfra.ru/get-zen_doc/271828/pub_66225cfdc80f781df5ecc96e_66225d92cae932444e931c3e/scale_1200'); /* Replace with your background image URL */
+        background-size: cover;
+        background-position: center;
+        font-family: 'Arial', sans-serif;
+        color: #fff; /* Ensures text is readable against the background */
+        text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7); /* Adds a shadow to the text for better readability */
+        margin: 0; /* Removes default margin */
+        overflow: hidden; /* Ensures no scrollbars appear */
+    }
+    h1 {
+        color: green;
+        font-family: 'Georgia', serif;
+        font-size: 2.5em;
+        font-style: italic;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 20px;
+        text-align: center;
+        background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+        border-radius: 10px;
+    }
+    .form {
+        background-color: #4CAF50; /* Green background */
+        border: none;
+        color: white; /* White text */
+        padding: 12px 20px; /* Adjusted padding for uniform size */
+        text-align: center;
+        text-decoration: none;
+        font-size: 16px; /* Increased font size */
+        margin: 10px 2px; /* Adjusted margin */
+        cursor: pointer;
+        border-radius: 12px; /* Rounded corners */
+        box-shadow: 0 2px #999; /* Adjusted button shadow */
+        width: 150px; /* Fixed width for uniform size */
+    }
+    .form:hover {
+        background-color: #3e8e41;
+    }
+    .form:disabled {
+        background-color: gray;
+        cursor: not-allowed;
+        box-shadow: none;
+    }
+    .icon {
+        width: 300px;
+        height: 200px;
+        margin-top: 20px;
+    }
+</style>
+
+<div class="container">
+    <h1>Welcome в наш <b>kA3uHbI4</b></h1>
+    <form action="/form/">
+        <button class="form" type="submit">Новая игра</button>
 </div>
-<br>
-<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7xjgIjErfpWa0wiq4s-YxDXjheYoZ3wDnhA&s" 
-width="300" height="200" alt="Иконка">
 
 {% endblock %}
