@@ -56,7 +56,7 @@ def draw_card(deck):
 
 @app.route('/dealer/<deck>')
 def dealer(deck):
-	while sum(score_dealer) <= 17: #!если тянет 2 картинки, то больше 17 и дальше тянет! (у меня все ок)
+	while sum(score_dealer) <= 17: 
 		all_info = json.loads(requests.get #запрос
 	('https://deckofcardsapi.com/api/deck/'+deck+'/draw/?count=1').text)
 		draw = all_info["cards"][0]["image"] #картинка карты
@@ -72,7 +72,7 @@ def dealer(deck):
 		
 	sum_score_dealer = sum(score_dealer)
 	sum_score_player = sum(score_player)
-	if sum_score_player > 21 or (sum_score_player <= sum_score_dealer <= 21):
+	if sum_score_player > 21 or (sum_score_player <= sum_score_dealer and sum_score_dealer <= 21):
 		message = "Ты проиграл, лох"
 		return render_template('form.html', draw=draw, deck=deck, cardsrow=cardsrow, rem=rem, 
                            sum_score_player=sum_score_player, sum_score_dealer=sum_score_dealer, 
