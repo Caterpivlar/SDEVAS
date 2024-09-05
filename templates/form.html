@@ -1,4 +1,3 @@
-<!-- templates/form.html -->
 <!DOCTYPE html>
 {% extends "base.html" %}
 
@@ -6,95 +5,189 @@
 
 {% block content %}
 
-<div>
-<form action="/new_cards/{{deck}}">
-<button class='form' type='submit' id='give_card'>
-	Дай карту
-	</button>
-	</form>		
-</div>
-<br>
-<div>
-<form action="/form/">
-<button class='form' type='submit'>
-	Начать заново
-	</button>
-	</form>    
-</div>
-<br>
-<div>
-<form action="/dealer/{{deck}}">
-<button class='form' type='submit' id='pass'>
-	Пас
-	</button>
-	</form>    
+<style>
+    body {
+        background-image: url('https://img.freepik.com/premium-photo/poker-table-felt-background-high-resolution-photo_463999-1215.jpg?w=740'); /* Replace with your background image URL */
+        background-size: cover;
+        background-position: center;
+        font-family: 'Arial', sans-serif;
+        color: #fff; /* Ensures text is readable against the background */
+        text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7); /* Adds a shadow to the text for better readability */
+        margin: 0; /* Removes default margin */
+        overflow: hidden; /* Ensures no scrollbars appear */
+    }
+    h2 {
+        font-family: 'Georgia', serif;
+        font-size: 1.8em;
+        font-style: italic;
+        margin-bottom: 15px;
+    }
+    p {
+        font-family: 'Verdana', sans-serif;
+        font-size: 1.2em;
+        line-height: 1.5;
+    }
+    .container {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Two columns for the main layout */
+        gap: 10px; /* Reduced gap for better fitting */
+        padding: 10px; /* Reduced padding for better fitting */
+        max-width: 90vw; /* Compress the width of the screen */
+    }
+    .full-width {
+        grid-column: span 2; /* Span across both columns */
+    }
+    .section {
+        background: rgba(0,0,0,0.5); /* Semi-transparent background */
+        border-radius: 10px;
+        padding: 15px; /* Increased padding for better visibility */
+        text-align: center; /* Center content horizontally */
+    }
+    .buttons form {
+        display: flex;
+        justify-content: center; /* Center buttons horizontally */
+        margin-bottom: 10px; /* Spacing between buttons */
+    }
+    .form {
+        background-color: #4CAF50; /* Green background */
+        border: none;
+        color: white; /* White text */
+        padding: 12px 20px; /* Adjusted padding for uniform size */
+        text-align: center;
+        text-decoration: none;
+        font-size: 16px; /* Increased font size */
+        margin: 10px 2px; /* Adjusted margin */
+        cursor: pointer;
+        border-radius: 12px; /* Rounded corners */
+        box-shadow: 0 2px #999; /* Adjusted button shadow */
+        width: 150px; /* Fixed width for uniform size */
+    }
+    .form:hover {
+        background-color: #3e8e41;
+    }
+    .form:disabled {
+        background-color: gray;
+        cursor: not-allowed;
+        box-shadow: none;
+    }
+    .losing-message {
+        color: red;
+        font-size: 20px; /* Increased font size */
+        font-weight: bold;
+        font-family: 'Times New Roman', serif;
+        font-style: italic;
+    }
+    .winning-message {
+        color: green;
+        font-size: 20px; /* Increased font size */
+        font-weight: bold;
+        font-family: 'Times New Roman', serif;
+        font-style: italic;
+    }
+    .card-body img {
+        width: 72px; /* Adjusted card image size */
+        height: 108px; /* Adjusted card image size */
+    }
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between; /* Space cards evenly */
+    }
+    .col-md-3 {
+        flex: 0 0 24%; /* Adjusted to fit four cards per row */
+        max-width: 24%;
+        margin: 2px; /* Adjusted margin */
+    }
+    .player-score, .dealer-score {
+        font-family: 'Verdana', sans-serif;
+        font-size: 1.2em;
+        font-weight: bold;
+        margin-top: 5px; /* Adjusted margin */
+    }
+    .dealer-score {
+        text-align: center; /* Center the dealer score text */
+    }
+    .icons-column img {
+        width: 250px; /* Adjusted icon size */
+        height: 200px;
+    }
+</style>
+
+<div class="container">
+    <!-- Top Row: Buttons and Game Messages -->
+    <!-- Column 1: Buttons and remaining cards -->
+    <div class="section">
+        <div>
+            <form action="/new_cards/{{deck}}">
+                <button class="form" type="submit" id="give_card">Дай карту</button>
+            </form>
+            <form action="/form/">
+                <button class="form" type="submit">Начать заново</button>
+            </form>
+            <form action="/dealer/{{deck}}">
+                <button class="form" type="submit" id="pass">Пас</button>
+            </form>
+            <p>Осталось в колоде: {{rem}}</p>
+        </div>
+    </div>
+
+    <!-- Column 2: Icons and game message -->
+    <div class="section icons-column">
+        {% if game_over %}
+            {% if loser %} 
+                <img src="https://memchik.ru/images/templates/ebat_ty_loh.jpg" alt="Иконка">
+            {% endif %}
+            {% if winner %} 
+                <img src="https://static.stratege.ru/trophies/NPWR01460_00/TROP029.PNG" alt="Иконка">
+            {% endif %}
+            <p class="{% if loser %}losing-message{% elif winner %}winning-message{% endif %}">{{message}}</p>
+        {% endif %}
+    </div>
+
+    <!-- Bottom Row: Player's Cards -->
+    <div class="section cards-column">
+        <h2>Твои карты:</h2>
+        <div class="row">
+            {% for draw in cardsrow %} <!-- Для игрока -->
+                <div class="col-md-2">
+                    <div class="draw mb-2">
+                        <div class="card-body"> 
+                            <p class="badge bg-primary text-wrap"><img src="{{draw}}"></p>
+                        </div>
+                    </div>
+                </div>    
+            {% endfor %}
+        </div>
+        <div class="player-score">
+            <p>Счет игрока: {{sum_score_player}}</p>
+        </div>
+    </div>
+
+    <!-- Bottom Row: Dealer's Cards -->
+    <div class="section dealer_cards">
+        <h2>Карты дилера:</h2>
+        <div class="row">
+            {% for draw in dealer_cards %} <!-- Для дилера -->
+                <div class="col-md-2">
+                    <div class="draw mb-2">
+                        <div class="card-body"> 
+                            <p class="badge bg-primary text-wrap"><img src="{{draw}}"></p>
+                        </div>
+                    </div>
+                </div>    
+            {% endfor %}
+        </div>
+        <div class="dealer-score">
+            <p>Счет дилера: {{sum_score_dealer}}</p>
+        </div>
+    </div>
 </div>
 
-<div>
 {% if game_over %}
-	<script>{document.getElementById("give_card").disabled = true;}</script>
-	<script>{document.getElementById("pass").disabled = true;}</script>
-<p>{{message}}</p>
-
-	{%if loser%} 
-<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQr2KuOy1sD82kDJzveyWSLlKD9U6QFDGHWhQ&s" 
-width="300" height="200" alt="Иконка">
-	{% endif %}
-	
-	{%if winner%} 
-<img src="https://static.stratege.ru/trophies/NPWR01460_00/TROP029.PNG" 
- height="200" alt="Иконка">
-	{% endif %}
+    <script>
+        document.getElementById("give_card").disabled = true;
+        document.getElementById("pass").disabled = true;
+    </script>
 {% endif %}
-</div>
-
-
-<div>
-    <p>Осталось в колоде {{rem}}</p>
-	<p>Счет игрока {{sum_score_player}}</p>
-	<p>Счет дилера {{sum_score_dealer}}</p>
-</div>
-<div class="cardsrow">
- <div class="row">
- <p> Твои карты:</p>
-  {% for draw in cardsrow %} <!-- Для игрока -->
-    <div class="col-md-3">
-      <div class="draw mb-3">
-       <div class="card-body"> 
-         <p class="badge bg-primary text-wrap"><img src={{draw}} height="200" ></p>
-		  </div>
-      </div>
-    </div>	
-  {% endfor %}
-  </div>
-</div>
-
-<div class="dealer_cards">
- <div class="row">
-  <p> Карты дилера:</p>
-  {% for draw in dealer_cards %} <!-- Для дилера -->
-    <div class="col-md-3">
-      <div class="draw mb-3">
-       <div class="card-body"> 
-         <p class="badge bg-primary text-wrap"><img src={{draw}} height="200"></p>
-		  </div>
-      </div>
-    </div>	
-  {% endfor %}
-  </div>
-</div>
 
 {% endblock %}
- <!-- Условие для окончания игры -->
-<!--  <script> 
-if (game_over=true) {
-      document.getElementById("give_card").disabled = true;} 
-</script> <!-- Вырубить кнопку дай карту -->
-		<!-- <p class="losing-message"; style="color:red;">Вы проиграли, сыграем еще?</p>
-		 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQr2KuOy1sD82kDJzveyWSLlKD9U6QFDGHWhQ&s" alt="Иконка">  
-<br><br> 
-<!-- <form action="/form/">
-<button class='form' type='submit'>
-	ГО некст рили
-	</button>
-	</form> -->   
