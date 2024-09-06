@@ -34,26 +34,40 @@ def get_deck():
 @app.route('/new_cards')
 def draw_card():
 	deck_id=session.get('deck_id')
+	
 	if cardsrow == []: # определение перерменной для вытягивания карт
 		ctd = 2
 	else:
 		ctd = 1
 	i=0
+	
 	all_info = json.loads(requests.get #запрос
 	('https://deckofcardsapi.com/api/deck/'+deck_id+'/draw/?count='+str(ctd)).text)
+	session['all_info'] = all_info
+	all_info = session.get('all_info')
+	#session['all_info'].insert(0, all_info)
+	
 	for i in range(ctd): # Цикл для вытягивания 1 или 2 карт в зависимости от необходимости (кол-во ctd)
-		draw = all_info["cards"][i]["image"]   #картинка карты 1
+		
+		#session.get('all_info')
+		
+		draw = all_info["cards"][i]["image"]
+		#draw = session['all_info']["cards"][i]["image"]   #картинка карты 1
 		rem = all_info['remaining'] #сколько карт осталось
 		value = all_info["cards"][i]["value"] #вес карты
+		
 		if value =='JACK' or value == 'QUEEN' or value == 'KING': #условия для валет-туз
 			value = 10
 		elif value == 'ACE':
 			value = 11
+		
 		value = int(value)
+		
 		score_player.append(value) #включение в список значения карты
 		sum_score_player = sum(score_player) #сумма списка
 		cardsrow.insert(0, draw) #включение картинки в список
 		i=i+1
+	
 	if sum_score_player > 21: #условия проигрыша
 		message = "Ты проиграл, лох"
 		return render_template('form.html', draw=draw, cardsrow=cardsrow, rem=rem, 
