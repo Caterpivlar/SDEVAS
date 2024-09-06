@@ -1,13 +1,24 @@
 from flask import Flask, render_template
+from models import CARDS, db
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 import json
 import requests
+
 cardsrow = []
 dealer_cards = []
 score_player=[]
 score_dealer=[]
-app = Flask(__name__)
-	
 
+app = Flask(__name__)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'	
+# связываем приложение и экземпляр SQLAlchemy
+db.init_app(app)
+#создаем все, что есть в db.Models
+with app.app_context():
+    db.create_all()
+	
 @app.route('/')
 def start():
 	return render_template('index.html')
@@ -35,6 +46,7 @@ def draw_card(deck):
 		draw = all_info["cards"][i]["image"]   #картинка карты 1
 		rem = all_info['remaining'] #сколько карт осталось
 		value = all_info["cards"][i]["value"] #вес карты
+		code = all_info["cards"][i]["code"]
 		if value =='JACK' or value == 'QUEEN' or value == 'KING': #условия для валет-туз
 			value = 10
 		elif value == 'ACE':
@@ -44,6 +56,14 @@ def draw_card(deck):
 		sum_score_player = sum(score_player) #сумма списка
 		cardsrow.insert(0, draw) #включение картинки в список
 		i=i+1
+	# Записываем в базу данных	
+	new_card_to_db = CARDS (
+		deck_id = deck,
+		datetime = datetime.now(),
+		card = code)
+	db.session.add(new_card_to_db)
+	db.session.commit() #Коммитим в базу данных
+	
 	if sum_score_player > 21: #условия проигрыша
 		message = "Ты проиграл, лох"
 		return render_template('form.html', draw=draw, deck=deck, cardsrow=cardsrow, rem=rem, 
@@ -83,7 +103,10 @@ def dealer(deck):
                            sum_score_player=sum_score_player, sum_score_dealer=sum_score_dealer, 
                            game_over=True, dealer_cards=dealer_cards, message=message, winner=True)
 
-
+@app.route('/view_db')
+def view_db():
+    cards_db = CARDS.query.all()
+    return render_template('view_db.html', cards_db=cards_db)
 # @app.route('&&&')
 
 
