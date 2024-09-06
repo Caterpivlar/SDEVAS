@@ -77,7 +77,7 @@ def dealer(deck):
 		return render_template('form.html', draw=draw, deck=deck, cardsrow=cardsrow, rem=rem, 
                            sum_score_player=sum_score_player, sum_score_dealer=sum_score_dealer, 
                            game_over=True, dealer_cards=dealer_cards, message=message, loser=True)
-	elif sum_score_dealer > 21 or (sum_score_player <=21 and sum_score_dealer > 21):
+	elif sum_score_dealer > 21 or sum_score_dealer < sum_score_player:
 		message = "Дилер лох! Ты победил!"
 		return render_template('form.html', draw=draw, deck=deck, cardsrow=cardsrow, rem=rem, 
                            sum_score_player=sum_score_player, sum_score_dealer=sum_score_dealer, 
