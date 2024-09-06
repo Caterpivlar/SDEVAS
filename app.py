@@ -1,4 +1,7 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, session
+ 
+from flask_session import Session
+
 import json
 import requests
 cardsrow = []
@@ -6,7 +9,12 @@ dealer_cards = []
 score_player=[]
 score_dealer=[]
 app = Flask(__name__)
-	
+
+app.config['SECRET_KEY'] = 'biocad'
+app.config['SESSION_TYPE'] = 'filesystem'
+app.config['SESSION_FILE_THRESHOLD'] = 500
+
+Session(app)
 
 @app.route('/')
 def start():
@@ -18,19 +26,21 @@ def get_deck():
 	score_player.clear()
 	dealer_cards.clear()
 	score_dealer.clear()
-	deck = json.loads(requests.post
+	deck_id = json.loads(requests.post
 	('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1').text)["deck_id"]
-	return render_template('form.html', deck=deck)
+	session['deck_id'] = deck_id
+	return render_template('form.html', deck_id=deck_id)
 
-@app.route('/new_cards/<deck>')
-def draw_card(deck):
+@app.route('/new_cards')
+def draw_card():
+	deck_id=session.get('deck_id')
 	if cardsrow == []: # определение перерменной для вытягивания карт
 		ctd = 2
 	else:
 		ctd = 1
 	i=0
 	all_info = json.loads(requests.get #запрос
-	('https://deckofcardsapi.com/api/deck/'+deck+'/draw/?count='+str(ctd)).text)
+	('https://deckofcardsapi.com/api/deck/'+deck_id+'/draw/?count='+str(ctd)).text)
 	for i in range(ctd): # Цикл для вытягивания 1 или 2 карт в зависимости от необходимости (кол-во ctd)
 		draw = all_info["cards"][i]["image"]   #картинка карты 1
 		rem = all_info['remaining'] #сколько карт осталось
@@ -46,12 +56,12 @@ def draw_card(deck):
 		i=i+1
 	if sum_score_player > 21: #условия проигрыша
 		message = "Ты проиграл, лох"
-		return render_template('form.html', draw=draw, deck=deck, cardsrow=cardsrow, rem=rem, 
+		return render_template('form.html', draw=draw, cardsrow=cardsrow, rem=rem, 
                            sum_score_player=sum_score_player,message=message,
-                           game_over=True, loser=True)
+                           game_over=True, loser=True, deck_id=deck_id)
 	else:
-		return render_template('form.html', draw=draw,deck=deck,cardsrow=cardsrow, rem=rem, 
-		sum_score_player=sum_score_player, game_over=False)
+		return render_template('form.html', draw=draw,cardsrow=cardsrow, rem=rem, 
+		sum_score_player=sum_score_player, game_over=False, deck_id=deck_id)
 
 
 @app.route('/dealer/<deck>')
